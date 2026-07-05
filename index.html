@@ -2,1383 +2,450 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>UGC Exam Portal</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal · Notes Upload & Receive</title>
+  <!-- Bootstrap 5 + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-    }
-
-    html, body {
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow-x: hidden;
-    }
-
-    body {
-      background: linear-gradient(145deg, #f0f6fb 0%, #dce8f2 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      position: relative;
-      min-height: 100vh;
-      min-height: 100dvh;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background:
-        radial-gradient(circle at 20% 80%, rgba(30, 111, 159, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(26, 95, 133, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(47, 127, 181, 0.04) 0%, transparent 50%);
-      z-index: 0;
-      animation: bgPulse 8s ease-in-out infinite alternate;
-    }
-
-    @keyframes bgPulse {
-      0% {
-        opacity: 0.6;
-        transform: scale(1);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.12;
-      animation: floatOrb 12s ease-in-out infinite alternate;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .orb-1 {
-      width: 250px;
-      height: 250px;
-      background: #1e6f9f;
-      top: -80px;
-      right: -80px;
-      animation-delay: 0s;
-    }
-
-    .orb-2 {
-      width: 200px;
-      height: 200px;
-      background: #2f7fb5;
-      bottom: -40px;
-      left: -40px;
-      animation-delay: -4s;
-    }
-
-    .orb-3 {
-      width: 180px;
-      height: 180px;
-      background: #4a90b5;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation-delay: -8s;
-    }
-
-    @media (min-width: 768px) {
-      .orb-1 {
-        width: 400px;
-        height: 400px;
-        top: -100px;
-        right: -100px;
-      }
-      .orb-2 {
-        width: 300px;
-        height: 300px;
-        bottom: -50px;
-        left: -50px;
-      }
-      .orb-3 {
-        width: 250px;
-        height: 250px;
-      }
-    }
-
-    @keyframes floatOrb {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-      33% {
-        transform: translate(20px, -15px) scale(1.1);
-      }
-      66% {
-        transform: translate(-15px, 20px) scale(0.9);
-      }
-      100% {
-        transform: translate(10px, -10px) scale(1.05);
-      }
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 25px 50px rgba(0, 20, 40, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      padding: 1.8rem 1.5rem;
-      max-width: 500px;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-      animation: slideUp 0.6s ease-out;
-    }
-
-    @media (min-width: 480px) {
-      .glass-card {
-        padding: 2.5rem;
-      }
-    }
-
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    .login-title {
-      text-align: center;
-      margin-bottom: 1.8rem;
-    }
-
-    .login-title i {
-      font-size: 2.5rem;
-      color: #1a5f85;
-      margin-bottom: 0.5rem;
-      display: block;
-      animation: pulseIcon 2s ease-in-out infinite;
-    }
-
-    @media (min-width: 480px) {
-      .login-title i {
-        font-size: 3rem;
-      }
-    }
-
-    @keyframes pulseIcon {
-      0%,
-      100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.1);
-      }
-    }
-
-    .login-title h2 {
-      color: #0b2b3d;
-      font-weight: 600;
-      font-size: 1.5rem;
-    }
-
-    @media (min-width: 480px) {
-      .login-title h2 {
-        font-size: 1.8rem;
-      }
-    }
-
-    .login-title p {
-      color: #3a607a;
-      font-size: 0.85rem;
-      margin-top: 0.3rem;
-    }
-
-    @media (min-width: 480px) {
-      .login-title p {
-        font-size: 0.95rem;
-      }
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .input-group label {
-      font-weight: 500;
-      color: #1a4057;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .input-group input {
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 60px;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: 0.3s ease;
-      outline: none;
-      color: #0b2b3d;
-      width: 100%;
-      -webkit-appearance: none;
-    }
-
-    .input-group input::placeholder {
-      color: rgba(11, 43, 61, 0.5);
-    }
-
-    .input-group input:focus {
-      border-color: #1e7fb0;
-      box-shadow: 0 0 0 4px rgba(30, 127, 176, 0.15);
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    @media (min-width: 480px) {
-      .input-group input {
-        padding: 0.9rem 1.2rem;
-      }
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 60px;
-      background: linear-gradient(135deg, #1a5f85, #2f7fb5);
-      color: white;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: 0 8px 20px rgba(26, 95, 133, 0.3);
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .btn-login:active {
-      transform: scale(0.97);
-    }
-
-    .btn-login:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(26, 95, 133, 0.4);
-    }
-
-    .btn-login:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    @media (min-width: 480px) {
-      .btn-login {
-        padding: 0.9rem;
-        font-size: 1rem;
-      }
-    }
-
-    .login-message {
-      margin-top: 1rem;
-      padding: 0.8rem 1rem;
-      border-radius: 60px;
-      font-size: 0.85rem;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #12425e;
-      min-height: 2.8rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      word-break: break-word;
-      line-height: 1.5;
-    }
-
-    @media (min-width: 480px) {
-      .login-message {
-        font-size: 0.9rem;
-        min-height: 3rem;
-        padding: 1rem 1.5rem;
-      }
-    }
-
-    .login-message.success {
-      background: rgba(31, 139, 90, 0.15);
-      border-color: rgba(31, 139, 90, 0.3);
-      color: #1f8b5a;
-    }
-
-    .login-message.error {
-      background: rgba(177, 62, 62, 0.12);
-      border-color: rgba(177, 62, 62, 0.25);
-      color: #b13e3e;
-    }
-
-    .login-message i {
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .login-message .error-title {
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-    }
-
-    .login-message .error-detail {
-      font-size: 0.8rem;
-      opacity: 0.9;
-    }
-
-    .login-message .error-contact {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #1a5f85;
-      margin-top: 0.2rem;
-      background: rgba(26, 95, 133, 0.08);
-      padding: 0.2rem 0.8rem;
-      border-radius: 30px;
-    }
-
-    @media (min-width: 480px) {
-      .login-message .error-title {
-        font-size: 1.1rem;
-      }
-      .login-message .error-detail {
-        font-size: 0.85rem;
-      }
-      .login-message .error-contact {
-        font-size: 0.9rem;
-      }
-    }
-
-    .spinner {
-      display: inline-block;
-      animation: spin 0.8s linear infinite;
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    .portal-wrapper {
-      display: none;
-      width: 100%;
-      max-width: 880px;
-      animation: fadeInScale 0.8s ease-out;
-    }
-
-    .portal-wrapper.active {
-      display: block;
-    }
-
-    @keyframes fadeInScale {
-      from {
-        opacity: 0;
-        transform: scale(0.92);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .portal-card {
-      background: rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 1.8rem;
-      padding: 1.2rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 25px 50px rgba(0, 20, 40, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-      position: relative;
-      z-index: 1;
-    }
-
-    @media (min-width: 480px) {
-      .portal-card {
-        padding: 1.5rem 1.8rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .portal-card {
-        padding: 2rem 2.5rem;
-        border-radius: 2.5rem;
-      }
-    }
-
-    .portal-header {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    @media (min-width: 480px) {
-      .portal-header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-    }
-
-    .portal-card h1 {
-      font-weight: 600;
-      font-size: 1.3rem;
-      color: #0b2b3d;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .portal-card h1 i {
-      color: #1e6f9f;
-      font-size: 1.3rem;
-    }
-
-    @media (min-width: 480px) {
-      .portal-card h1 {
-        font-size: 1.6rem;
-        gap: 0.75rem;
-      }
-      .portal-card h1 i {
-        font-size: 1.6rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .portal-card h1 {
-        font-size: 2.2rem;
-      }
-      .portal-card h1 i {
-        font-size: 2rem;
-      }
-    }
-
-    .status-badge {
-      background: rgba(219, 234, 254, 0.6);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: #1a4b6d;
-      padding: 0.15rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      white-space: nowrap;
-    }
-
-    @media (min-width: 480px) {
-      .status-badge {
-        font-size: 0.75rem;
-        padding: 0.2rem 1rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .status-badge {
-        font-size: 0.8rem;
-        padding: 0.2rem 1.2rem;
-      }
-    }
-
-    .portal-user {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      font-size: 0.8rem;
-    }
-
-    .portal-user span {
-      font-weight: 500;
-      color: #0b2b3d;
-      word-break: break-all;
-      max-width: 180px;
-    }
-
-    @media (min-width: 480px) {
-      .portal-user {
-        font-size: 0.9rem;
-      }
-      .portal-user span {
-        max-width: 250px;
-      }
-    }
-
-    .logout-btn {
-      background: rgba(177, 62, 62, 0.15);
-      border: 1px solid rgba(177, 62, 62, 0.2);
-      color: #b13e3e;
-      padding: 0.3rem 0.8rem;
-      border-radius: 60px;
-      font-size: 0.7rem;
-      cursor: pointer;
-      transition: 0.3s ease;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      -webkit-tap-highlight-color: transparent;
-      white-space: nowrap;
-    }
-
-    .logout-btn:active {
-      transform: scale(0.95);
-    }
-
-    @media (min-width: 480px) {
-      .logout-btn {
-        padding: 0.4rem 1.2rem;
-        font-size: 0.8rem;
-      }
-    }
-
-    .subhead {
-      color: #2c4c66;
-      margin-bottom: 1rem;
-      padding-left: 0.8rem;
-      font-weight: 400;
-      font-size: 0.75rem;
-      background: rgba(47, 127, 181, 0.04);
-      border-radius: 0 8px 8px 0;
-      line-height: 1.5;
-      border-left: 3px solid #2f7fb5;
-    }
-
-    @media (min-width: 480px) {
-      .subhead {
-        font-size: 0.9rem;
-        padding-left: 1rem;
-        border-left: 4px solid #2f7fb5;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .subhead {
-        font-size: 1rem;
-        margin-bottom: 1.8rem;
-      }
-    }
-
-    .exam-container {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 0.8rem;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02), 0 6px 12px rgba(0, 20, 30, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      min-height: 250px;
-      position: relative;
-      transition: 0.3s ease;
-    }
-
-    @media (min-width: 480px) {
-      .exam-container {
-        padding: 1rem;
-        min-height: 320px;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .exam-container {
-        min-height: 380px;
-        border-radius: 1.8rem;
-      }
-    }
-
-    .exam-container iframe {
-      width: 100%;
-      height: 350px;
-      border: none;
-      border-radius: 1rem;
-      background: rgba(248, 252, 255, 0.6);
-      display: block;
-    }
-
-    @media (min-width: 480px) {
-      .exam-container iframe {
-        height: 420px;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .exam-container iframe {
-        height: 500px;
-        border-radius: 1.2rem;
-      }
-    }
-
-    .exam-placeholder {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 180px;
-      background: rgba(241, 247, 252, 0.5);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      color: #3a5f7a;
-      gap: 8px;
-      border: 1px dashed rgba(30, 111, 159, 0.2);
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .exam-placeholder i {
-      font-size: 2.5rem;
-      opacity: 0.4;
-      color: #1e6f9f;
-    }
-
-    .exam-placeholder p {
-      font-size: 0.85rem;
-    }
-
-    .exam-placeholder span {
-      font-size: 0.7rem;
-    }
-
-    @media (min-width: 480px) {
-      .exam-placeholder {
-        height: 220px;
-        gap: 12px;
-      }
-      .exam-placeholder i {
-        font-size: 3rem;
-      }
-      .exam-placeholder p {
-        font-size: 0.95rem;
-      }
-      .exam-placeholder span {
-        font-size: 0.8rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .exam-placeholder {
-        height: 260px;
-      }
-      .exam-placeholder i {
-        font-size: 3.6rem;
-      }
-    }
-
-    .action-bar {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      margin-top: 0.8rem;
-      align-items: stretch;
-    }
-
-    @media (min-width: 480px) {
-      .action-bar {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .action-bar {
-        margin-top: 1.2rem;
-      }
-    }
-
-    .action-bar-left {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      width: 100%;
-    }
-
-    @media (min-width: 480px) {
-      .action-bar-left {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        width: auto;
-      }
-    }
-
-    .action-bar-right {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      width: 100%;
-      align-items: stretch;
-    }
-
-    @media (min-width: 480px) {
-      .action-bar-right {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        width: auto;
-        align-items: center;
-      }
-    }
-
-    .btn {
-      border: none;
-      padding: 0.7rem 1.2rem;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid transparent;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      -webkit-tap-highlight-color: transparent;
-      width: 100%;
-      min-height: 44px;
-    }
-
-    .btn:active {
-      transform: scale(0.97);
-    }
-
-    @media (min-width: 480px) {
-      .btn {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
-        width: auto;
-        min-height: auto;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .btn {
-        padding: 0.8rem 1.8rem;
-        font-size: 0.95rem;
-      }
-    }
-
-    .btn-success {
-      background: linear-gradient(135deg, #1f8b5a, #2a9d6e);
-      color: white;
-      box-shadow: 0 8px 20px rgba(31, 139, 90, 0.25);
-    }
-
-    .btn-success:active {
-      box-shadow: 0 4px 12px rgba(31, 139, 90, 0.2);
-    }
-
-    .btn-success:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-warning {
-      background: linear-gradient(135deg, #d4a017, #e6b422);
-      color: white;
-      box-shadow: 0 8px 20px rgba(212, 160, 23, 0.25);
-    }
-
-    .btn-warning:active {
-      box-shadow: 0 4px 12px rgba(212, 160, 23, 0.2);
-    }
-
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #1d4f6e;
-    }
-
-    .btn-outline:active {
-      background: rgba(255, 255, 255, 0.35);
-    }
-
-    .reset-label {
-      font-size: 0.65rem;
-      color: #2b5d7a;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      white-space: nowrap;
-    }
-
-    @media (min-width: 480px) {
-      .reset-label {
-        font-size: 0.75rem;
-        margin-left: 0.5rem;
-      }
-    }
-
-    .footer-note {
-      margin-top: 1.2rem;
-      font-size: 0.65rem;
-      color: #3a607a;
-      opacity: 0.7;
-      text-align: center;
-      border-top: 1px solid rgba(208, 224, 236, 0.3);
-      padding-top: 1rem;
-    }
-
-    @media (min-width: 480px) {
-      .footer-note {
-        font-size: 0.75rem;
-        margin-top: 1.5rem;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .footer-note {
-        font-size: 0.8rem;
-        margin-top: 1.8rem;
-        padding-top: 1.2rem;
-      }
-    }
-
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease;
-      padding: 1rem;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    .modal-box {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      border-radius: 1.8rem;
-      padding: 1.8rem 1.5rem;
-      max-width: 420px;
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-      animation: modalSlideIn 0.3s ease;
-      margin: 1rem;
-    }
-
-    @media (min-width: 480px) {
-      .modal-box {
-        padding: 2.5rem;
-        border-radius: 2rem;
-      }
-    }
-
-    @keyframes modalSlideIn {
-      from {
-        transform: scale(0.9) translateY(-20px);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-      }
-    }
-
-    .modal-box h3 {
-      color: #0b2b3d;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.1rem;
-    }
-
-    @media (min-width: 480px) {
-      .modal-box h3 {
-        font-size: 1.3rem;
-      }
-    }
-
-    .modal-box p {
-      color: #4a6a7a;
-      margin-bottom: 1.2rem;
-      font-size: 0.85rem;
-    }
-
-    @media (min-width: 480px) {
-      .modal-box p {
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-      }
-    }
-
-    .modal-box input {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 60px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      outline: none;
-      transition: 0.2s;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      -webkit-appearance: none;
-    }
-
-    .modal-box input:focus {
-      border-color: #1e7fb0;
-      box-shadow: 0 0 0 4px rgba(30, 127, 176, 0.1);
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-    }
-
-    @media (min-width: 480px) {
-      .modal-actions {
-        flex-direction: row;
-        gap: 0.8rem;
-        justify-content: flex-end;
-      }
-    }
-
-    .modal-actions .btn {
-      width: 100%;
-      justify-content: center;
-    }
-
-    @media (min-width: 480px) {
-      .modal-actions .btn {
-        width: auto;
-        padding: 0.6rem 1.5rem;
-      }
-    }
-
-    .modal-error {
-      color: #b13e3e;
-      font-size: 0.85rem;
-      margin-bottom: 0.8rem;
-      display: none;
-    }
-
-    .modal-error.show {
-      display: block;
-    }
+    body { background: #f4f7fc; }
+    .portal-card { border-radius: 1.25rem; box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+    .student-avatar { width: 48px; height: 48px; background: #0d6efd; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 600; font-size: 1.3rem; }
+    .course-badge { background: #eef2ff; color: #1d4ed8; padding: 0.4rem 0.9rem; border-radius: 2rem; font-size: 0.85rem; }
+    .note-item { background: #f8faff; border-radius: 0.75rem; padding: 0.75rem 1rem; border-left: 4px solid #0d6efd; }
+    .upload-area { border: 2px dashed #cbd5e1; border-radius: 1rem; padding: 1.5rem; text-align: center; transition: 0.2s; }
+    .upload-area:hover { border-color: #0d6efd; background: #f8fcff; }
+    .file-name { max-width: 180px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .note-card { transition: 0.15s; }
+    .note-card:hover { background: #f1f5ff; }
   </style>
 </head>
 <body>
 
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-
+<div class="container py-4" id="app">
   <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="glass-card">
-    <div class="login-title">
-      <i class="fas fa-graduation-cap"></i>
-      <h2>Exam Portal</h2>
-      <p>Enter your registered email to continue</p>
+  <div id="loginScreen" class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-5 col-lg-4">
+      <div class="card portal-card border-0 p-4">
+        <div class="text-center mb-4">
+          <i class="bi bi-mortarboard-fill fs-1 text-primary"></i>
+          <h4 class="mt-2 fw-bold">Student Portal</h4>
+          <p class="text-muted small">Sign in to access your dashboard & notes</p>
+        </div>
+        <form id="loginForm">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Student ID</label>
+            <input type="text" class="form-control form-control-lg" id="studentIdInput" placeholder="e.g. S1001" value="S1001" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" class="form-control form-control-lg" id="passwordInput" placeholder="••••••••" value="pass123" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100">Login <i class="bi bi-arrow-right ms-1"></i></button>
+          <div class="mt-3 text-center small text-secondary">
+            <i class="bi bi-info-circle"></i> Demo: S1001 / pass123 &bull; S1002 / pass123
+          </div>
+        </form>
+      </div>
     </div>
-
-    <div class="input-group">
-      <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
-      <input type="email" id="loginEmail" placeholder="student@university.edu" value="" inputmode="email" autocomplete="email">
-    </div>
-
-    <button class="btn-login" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
-
-    <div id="loginMessage" class="login-message"><i class="fas fa-info-circle"></i> Enter your registered email</div>
   </div>
 
-  <!-- PORTAL -->
-  <div class="portal-wrapper" id="portalWrapper">
-    <div class="portal-card">
-      <div class="portal-header">
-        <h1>
-          <i class="fas fa-graduation-cap"></i> Exam Portal
-          <span class="status-badge" id="globalStatus"><i class="fas fa-check-circle" style="color:#1f8b5a;"></i> logged in</span>
-        </h1>
-        <div class="portal-user">
-          <span id="portalUserEmail"><i class="fas fa-user"></i> user@example.com</span>
-          <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </div>
+  <!-- DASHBOARD -->
+  <div id="dashboardScreen" style="display: none;">
+    <!-- top bar -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+      <div>
+        <h4 class="fw-bold mb-0"><i class="bi bi-mortarboard-fill text-primary me-2"></i>Student Portal</h4>
+        <span class="text-muted small">Welcome, <span id="displayName">—</span></span>
       </div>
-      <div class="subhead">
-        <i class="fas fa-user-check"></i> registered students only · google form embedded
+      <div class="d-flex align-items-center gap-3 mt-2 mt-sm-0">
+        <span class="badge bg-light text-dark border px-3 py-2"><i class="bi bi-calendar3 me-1"></i> <span id="currentDate"></span></span>
+        <button class="btn btn-outline-danger btn-sm" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</button>
       </div>
+    </div>
 
-      <div id="examArea">
-        <div class="exam-container" id="examContainer">
-          <div id="examContent">
-            <div class="exam-placeholder">
-              <i class="fas fa-google"></i>
-              <p><strong>Google Form</strong> will appear after clicking "Start exam"</p>
-              <span>(embed ready)</span>
+    <!-- tabs -->
+    <ul class="nav nav-tabs border-0 mb-4" id="portalTabs" role="tablist">
+      <li class="nav-item"><button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboardPane" type="button"><i class="bi bi-grid-fill me-1"></i> Dashboard</button></li>
+      <li class="nav-item"><button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profilePane" type="button"><i class="bi bi-person-fill me-1"></i> Profile</button></li>
+      <li class="nav-item"><button class="nav-link" id="courses-tab" data-bs-toggle="tab" data-bs-target="#coursesPane" type="button"><i class="bi bi-book-fill me-1"></i> Courses</button></li>
+      <li class="nav-item"><button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notesPane" type="button"><i class="bi bi-file-earmark-text-fill me-1"></i> Notes</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- DASHBOARD -->
+      <div class="tab-pane fade show active" id="dashboardPane" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card portal-card border-0 h-100 p-3">
+              <div class="d-flex align-items-center">
+                <div class="student-avatar me-3" id="dashAvatar">S</div>
+                <div><h6 class="mb-0 fw-bold" id="dashStudentName">Student</h6><small class="text-muted" id="dashStudentId">S1001</small></div>
+              </div>
+              <hr><div><i class="bi bi-envelope me-2"></i> <span id="dashEmail">student@university.edu</span></div>
+              <div><i class="bi bi-phone me-2"></i> <span id="dashPhone">+1 234 567 890</span></div>
+              <div class="mt-2"><i class="bi bi-mortarboard me-2"></i> <span id="dashMajor">Computer Science</span></div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <div class="card portal-card border-0 h-100 p-3">
+              <h6 class="fw-bold"><i class="bi bi-bookmark-star me-2"></i>Current Enrollment</h6>
+              <div id="enrolledCoursesList" class="mt-2"></div>
+              <div class="mt-3 text-end"><span class="badge bg-primary-subtle text-primary px-3 py-2"><i class="bi bi-plus-circle me-1"></i> <span id="enrolledCount">0</span> courses</span></div>
             </div>
           </div>
         </div>
-
-        <div class="action-bar">
-          <div class="action-bar-left">
-            <button class="btn btn-success" id="startExamBtn"><i class="fas fa-play"></i> Start exam</button>
-          </div>
-          <div class="action-bar-right">
-            <button class="btn btn-warning" id="resetExamBtn"><i class="fas fa-undo-alt"></i> Reset</button>
-            <span class="reset-label"><i class="fas fa-lock"></i> passcode</span>
+        <div class="row mt-4">
+          <div class="col-12">
+            <div class="card portal-card border-0 p-3">
+              <h6 class="fw-bold"><i class="bi bi-clock-history me-2"></i>Recent activity</h6>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between"><span><i class="bi bi-check-circle-fill text-success me-2"></i>Assignment submitted: Algorithm Design</span><small class="text-muted">2h ago</small></li>
+                <li class="list-group-item d-flex justify-content-between"><span><i class="bi bi-calendar-check me-2 text-primary"></i>Enrolled in "Data Structures"</span><small class="text-muted">yesterday</small></li>
+                <li class="list-group-item d-flex justify-content-between"><span><i class="bi bi-star-fill text-warning me-2"></i>Grade posted: Discrete Math (A-)</span><small class="text-muted">3d ago</small></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <div class="footer-note">
-        <i class="fas fa-shield-alt"></i> only registered students (email in spreadsheet) can access
+
+      <!-- PROFILE -->
+      <div class="tab-pane fade" id="profilePane" role="tabpanel">
+        <div class="card portal-card border-0 p-4">
+          <div class="d-flex align-items-center gap-4 mb-4">
+            <div class="student-avatar" style="width:72px;height:72px;font-size:2rem;" id="profileAvatar">S</div>
+            <div><h5 class="fw-bold mb-0" id="profileFullName">Student</h5><p class="text-muted mb-0" id="profileId">S1001</p></div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="fw-semibold">Email</label><p class="border-bottom pb-1" id="profileEmail">—</p></div>
+            <div class="col-md-6"><label class="fw-semibold">Phone</label><p class="border-bottom pb-1" id="profilePhone">—</p></div>
+            <div class="col-md-6"><label class="fw-semibold">Major</label><p class="border-bottom pb-1" id="profileMajor">—</p></div>
+            <div class="col-md-6"><label class="fw-semibold">Year</label><p class="border-bottom pb-1" id="profileYear">—</p></div>
+          </div>
+          <div class="mt-3"><button class="btn btn-outline-primary" id="editProfileBtn"><i class="bi bi-pencil"></i> Edit profile (demo)</button></div>
+        </div>
+      </div>
+
+      <!-- COURSES -->
+      <div class="tab-pane fade" id="coursesPane" role="tabpanel">
+        <div class="card portal-card border-0 p-3">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="fw-bold mb-0"><i class="bi bi-book me-2"></i>All available courses</h6>
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-2"><span id="allCoursesCount">0</span> courses</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light"><tr><th>Code</th><th>Course</th><th>Credits</th><th>Instructor</th><th>Action</th></tr></thead>
+              <tbody id="coursesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES PANE (Upload + Receive) -->
+      <div class="tab-pane fade" id="notesPane" role="tabpanel">
+        <div class="row g-4">
+          <!-- Upload section (teacher side) -->
+          <div class="col-lg-5">
+            <div class="card portal-card border-0 p-3 h-100">
+              <h6 class="fw-bold"><i class="bi bi-cloud-upload me-2"></i>Upload Notes (Teacher)</h6>
+              <form id="uploadNoteForm">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Note Title</label>
+                  <input type="text" class="form-control" id="noteTitleInput" placeholder="e.g. Lecture 5: Recursion" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Subject / Course</label>
+                  <input type="text" class="form-control" id="noteSubjectInput" placeholder="e.g. CS201" value="CS201">
+                </div>
+                <div class="upload-area" id="uploadArea">
+                  <i class="bi bi-file-earmark-arrow-up fs-3 text-secondary"></i>
+                  <p class="mb-1 mt-2"><strong>Drop a file or click to browse</strong></p>
+                  <p class="text-muted small" id="fileInfo">No file selected</p>
+                  <input type="file" id="noteFileInput" accept=".pdf,.doc,.docx,.txt,.ppt,.pptx,.md" style="display:none;">
+                  <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="browseFileBtn"><i class="bi bi-folder2-open"></i> Browse</button>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mt-3"><i class="bi bi-upload"></i> Upload Note</button>
+              </form>
+              <div id="uploadStatus" class="mt-2 small"></div>
+            </div>
+          </div>
+
+          <!-- Receive / notes list (student side) -->
+          <div class="col-lg-7">
+            <div class="card portal-card border-0 p-3 h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2"></i>Available Notes</h6>
+                <span class="badge bg-secondary-subtle text-secondary px-3 py-2"><span id="notesCount">0</span> notes</span>
+              </div>
+              <div id="notesListContainer">
+                <!-- dynamic notes cards -->
+                <p class="text-muted text-center py-4" id="emptyNotesMsg">No notes uploaded yet. Check back later!</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- RESET MODAL -->
-  <div class="modal-overlay" id="resetModal">
-    <div class="modal-box">
-      <h3><i class="fas fa-lock" style="color:#d4a017;"></i> Reset Exam</h3>
-      <p>Enter the admin passcode to reset the exam state.</p>
-      <div class="modal-error" id="modalError">Incorrect passcode. Please try again.</div>
-      <input type="password" id="resetPasscode" placeholder="Enter passcode" autocomplete="off">
-      <div class="modal-actions">
-        <button class="btn btn-outline" id="modalCancelBtn">Cancel</button>
-        <button class="btn btn-warning" id="modalConfirmBtn"><i class="fas fa-check"></i> Reset</button>
-      </div>
-    </div>
-  </div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  (function() {
+    "use strict";
 
-  <script>
-    (function() {
-      "use strict";
+    // ----- DATA -----
+    const STUDENTS = [
+      { id: 'S1001', password: 'pass123', name: 'Emma Johnson', email: 'emma.j@university.edu', phone: '+1 234 567 890', major: 'Computer Science', year: 'Junior' },
+      { id: 'S1002', password: 'pass123', name: 'Liam Chen', email: 'liam.c@university.edu', phone: '+1 345 678 901', major: 'Mathematics', year: 'Sophomore' }
+    ];
 
-      // ================================================================
-      // CONFIGURATION - Update these with your details
-      // ================================================================
-      var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzy4MFV5K1Pt3X-QIWhOPwYqgcD4mMBCIiW1IDtBR32_J0A5r9Z9UVyNigfTJCNt6p-WA/exec';
-      var RESET_PASSCODE = '18533';
-      var ADMIN_CONTACT = 'rahithofficial1@gmail.com';
+    const COURSES = [
+      { code: 'CS101', title: 'Intro to CS', credits: 3, instructor: 'Dr. Turing' },
+      { code: 'CS201', title: 'Data Structures', credits: 4, instructor: 'Prof. Lovelace' },
+      { code: 'CS301', title: 'Algorithm Design', credits: 3, instructor: 'Dr. Hopper' },
+      { code: 'MATH201', title: 'Calculus II', credits: 4, instructor: 'Prof. Noether' }
+    ];
 
-      // IMPORTANT: Replace YOUR_FORM_ID with your actual form ID
-      // Get it from: Open your form > Send > Embed tab
-      var GOOGLE_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true';
+    const ENROLLMENTS = { 'S1001': ['CS101','CS201','MATH201'], 'S1002': ['CS101'] };
 
-      // ================================================================
-      // DOM references
-      // ================================================================
-      var loginScreen = document.getElementById('loginScreen');
-      var portalWrapper = document.getElementById('portalWrapper');
-      var loginEmail = document.getElementById('loginEmail');
-      var loginBtn = document.getElementById('loginBtn');
-      var loginMessage = document.getElementById('loginMessage');
-      var portalUserEmail = document.getElementById('portalUserEmail');
-      var logoutBtn = document.getElementById('logoutBtn');
-      var globalStatus = document.getElementById('globalStatus');
-      var startExamBtn = document.getElementById('startExamBtn');
-      var resetExamBtn = document.getElementById('resetExamBtn');
-      var examContainer = document.getElementById('examContainer');
+    // ----- NOTES STORE (in-memory) -----
+    let notesStore = [
+      { id: 'n1', title: 'Recursion explained', subject: 'CS201', fileName: 'recursion_notes.pdf', fileSize: '1.2 MB', uploadDate: '2026-07-05', content: 'dummy-pdf-content' },
+      { id: 'n2', title: 'Big-O notation', subject: 'CS301', fileName: 'big_o_cheatsheet.pdf', fileSize: '0.8 MB', uploadDate: '2026-07-04', content: 'dummy-pdf-content' }
+    ];
 
-      var resetModal = document.getElementById('resetModal');
-      var resetPasscode = document.getElementById('resetPasscode');
-      var modalError = document.getElementById('modalError');
-      var modalConfirmBtn = document.getElementById('modalConfirmBtn');
-      var modalCancelBtn = document.getElementById('modalCancelBtn');
+    // ----- STATE -----
+    let currentStudent = null;
+    let currentEnrolled = [];
 
-      // ================================================================
-      // State
-      // ================================================================
-      var state = {
-        registered: false,
-        studentEmail: '',
-        studentName: '',
-        examActive: false
+    // DOM refs
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboardScreen = document.getElementById('dashboardScreen');
+    const loginForm = document.getElementById('loginForm');
+    const studentIdInput = document.getElementById('studentIdInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Helper: get course by code
+    function getCourseByCode(code) { return COURSES.find(c => c.code === code); }
+
+    function getEnrolledCourses(studentId) {
+      const codes = ENROLLMENTS[studentId] || [];
+      return codes.map(code => getCourseByCode(code)).filter(Boolean);
+    }
+
+    // ----- RENDER ALL -----
+    function renderAll(student) {
+      if (!student) return;
+      currentStudent = student;
+      currentEnrolled = getEnrolledCourses(student.id);
+
+      // Dashboard
+      document.getElementById('displayName').textContent = student.name;
+      document.getElementById('dashStudentName').textContent = student.name;
+      document.getElementById('dashStudentId').textContent = student.id;
+      document.getElementById('dashEmail').textContent = student.email;
+      document.getElementById('dashPhone').textContent = student.phone;
+      document.getElementById('dashMajor').textContent = student.major;
+      document.getElementById('dashAvatar').textContent = student.name.charAt(0).toUpperCase();
+      document.getElementById('enrolledCount').textContent = currentEnrolled.length;
+      const enrolledList = document.getElementById('enrolledCoursesList');
+      if (currentEnrolled.length === 0) enrolledList.innerHTML = `<div class="text-muted py-2">No courses enrolled.</div>`;
+      else enrolledList.innerHTML = currentEnrolled.map(c => 
+        `<span class="course-badge me-2 mb-2 d-inline-block"><i class="bi bi-book me-1"></i>${c.code} · ${c.title}</span>`
+      ).join('');
+
+      // Profile
+      document.getElementById('profileFullName').textContent = student.name;
+      document.getElementById('profileId').textContent = student.id;
+      document.getElementById('profileEmail').textContent = student.email;
+      document.getElementById('profilePhone').textContent = student.phone;
+      document.getElementById('profileMajor').textContent = student.major;
+      document.getElementById('profileYear').textContent = student.year;
+      document.getElementById('profileAvatar').textContent = student.name.charAt(0).toUpperCase();
+
+      // Courses table
+      const tbody = document.getElementById('coursesTableBody');
+      document.getElementById('allCoursesCount').textContent = COURSES.length;
+      tbody.innerHTML = '';
+      COURSES.forEach(course => {
+        const isEnrolled = currentEnrolled.some(ec => ec.code === course.code);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${course.code}</strong></td>
+          <td>${course.title}</td>
+          <td>${course.credits}</td>
+          <td>${course.instructor}</td>
+          <td>${isEnrolled ? `<button class="btn btn-sm btn-outline-secondary" disabled><i class="bi bi-check-lg text-success"></i> Enrolled</button>`
+            : `<button class="btn btn-sm btn-primary enroll-btn" data-code="${course.code}">Enroll</button>`}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.querySelectorAll('.enroll-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const code = this.dataset.code;
+          if (!currentStudent) return;
+          const enrolledCodes = ENROLLMENTS[currentStudent.id] || [];
+          if (enrolledCodes.includes(code)) return alert('Already enrolled.');
+          ENROLLMENTS[currentStudent.id] = [...enrolledCodes, code];
+          renderAll(currentStudent);
+          alert(`✅ Enrolled in ${code}`);
+        });
+      });
+
+      // NOTES: render notes list
+      renderNotes();
+
+      // Date
+      document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+    }
+
+    // ----- RENDER NOTES (receive) -----
+    function renderNotes() {
+      const container = document.getElementById('notesListContainer');
+      const countSpan = document.getElementById('notesCount');
+      countSpan.textContent = notesStore.length;
+      if (notesStore.length === 0) {
+        container.innerHTML = `<p class="text-muted text-center py-4" id="emptyNotesMsg">No notes uploaded yet. Check back later!</p>`;
+        return;
+      }
+      let html = `<div class="row g-3">`;
+      notesStore.forEach(note => {
+        html += `
+          <div class="col-md-6 col-lg-6">
+            <div class="note-card p-3 border rounded-3 bg-white d-flex flex-column h-100">
+              <div class="d-flex align-items-start">
+                <i class="bi bi-file-earmark-pdf fs-3 text-danger me-2"></i>
+                <div class="flex-grow-1">
+                  <h6 class="fw-bold mb-1">${note.title}</h6>
+                  <span class="badge bg-light text-dark me-1">${note.subject}</span>
+                  <span class="badge bg-light text-dark"><i class="bi bi-clock"></i> ${note.uploadDate}</span>
+                </div>
+              </div>
+              <div class="mt-2 d-flex justify-content-between align-items-center">
+                <small class="text-muted"><i class="bi bi-file-earmark"></i> ${note.fileName} (${note.fileSize})</small>
+                <button class="btn btn-sm btn-outline-primary download-note-btn" data-id="${note.id}"><i class="bi bi-download"></i> Download</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      container.innerHTML = html;
+
+      // Attach download handlers
+      document.querySelectorAll('.download-note-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const id = this.dataset.id;
+          const note = notesStore.find(n => n.id === id);
+          if (!note) return alert('Note not found');
+          // Simulate download: create a text file with note content
+          const blob = new Blob([`📘 ${note.title}\nSubject: ${note.subject}\n\nThis is a simulated note file. In a real app, you would download the actual PDF/doc.\n\nContent: ${note.content || 'sample content'}`], { type: 'text/plain' });
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = note.fileName || `note_${note.id}.txt`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+          alert(`📥 Downloading "${note.title}" ...`);
+        });
+      });
+    }
+
+    // ----- UPLOAD NOTE (teacher) -----
+    function uploadNote(title, subject, file) {
+      if (!title.trim()) return alert('Please enter a title.');
+      if (!file) return alert('Please select a file.');
+      // Simulate file reading
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const newNote = {
+          id: 'n' + Date.now(),
+          title: title.trim(),
+          subject: subject.trim() || 'General',
+          fileName: file.name,
+          fileSize: (file.size / (1024*1024)).toFixed(1) + ' MB',
+          uploadDate: new Date().toISOString().slice(0,10),
+          content: e.target.result.slice(0, 200) // preview
+        };
+        notesStore.unshift(newNote);
+        renderNotes();
+        document.getElementById('uploadStatus').innerHTML = `<span class="text-success"><i class="bi bi-check-circle"></i> Note "${title}" uploaded successfully!</span>`;
+        document.getElementById('noteTitleInput').value = '';
+        document.getElementById('noteSubjectInput').value = '';
+        document.getElementById('fileInfo').textContent = 'No file selected';
+        document.getElementById('noteFileInput').value = '';
+        setTimeout(() => { document.getElementById('uploadStatus').innerHTML = ''; }, 4000);
       };
+      reader.readAsText(file);
+    }
 
-      // ================================================================
-      // Functions
-      // ================================================================
-      function checkEmailWithAppsScript(email) {
-        return fetch(APPS_SCRIPT_URL + '?email=' + encodeURIComponent(email.trim()))
-          .then(function(response) {
-            if (!response.ok) {
-              throw new Error('HTTP ' + response.status);
-            }
-            return response.json();
-          })
-          .then(function(data) {
-            return data;
-          })
-          .catch(function(error) {
-            console.error('Error calling Apps Script:', error);
-            return {
-              success: false,
-              found: false,
-              message: 'Error: ' + error.message
-            };
-          });
-      }
+    // ----- LOGIN / LOGOUT -----
+    function handleLogin(e) {
+      e.preventDefault();
+      const id = studentIdInput.value.trim();
+      const pwd = passwordInput.value.trim();
+      const student = STUDENTS.find(s => s.id === id && s.password === pwd);
+      if (!student) { alert('Invalid credentials. Try S1001 / pass123'); return; }
+      loginScreen.style.display = 'none';
+      dashboardScreen.style.display = 'block';
+      renderAll(student);
+      const tab = new bootstrap.Tab(document.getElementById('dashboard-tab'));
+      tab.show();
+    }
 
-      function showLogin() {
-        loginScreen.style.display = 'block';
-        portalWrapper.classList.remove('active');
-        loginEmail.value = '';
-        loginMessage.innerHTML = '<i class="fas fa-info-circle"></i> Enter your registered email';
-        loginMessage.className = 'login-message';
-        loginBtn.disabled = false;
-        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-        state.registered = false;
-        state.studentEmail = '';
-        state.studentName = '';
-        state.examActive = false;
-      }
+    function logout() {
+      currentStudent = null;
+      loginScreen.style.display = 'flex';
+      dashboardScreen.style.display = 'none';
+      studentIdInput.value = 'S1001';
+      passwordInput.value = 'pass123';
+    }
 
-      function showPortal(email) {
-        loginScreen.style.display = 'none';
-        portalWrapper.classList.add('active');
-        portalUserEmail.innerHTML = '<i class="fas fa-user"></i> ' + email;
-        globalStatus.innerHTML = '<i class="fas fa-check-circle" style="color:#1f8b5a;"></i> logged in';
-        startExamBtn.disabled = false;
-        renderPortal();
-      }
+    // ----- EVENT LISTENERS -----
+    loginForm.addEventListener('submit', handleLogin);
+    logoutBtn.addEventListener('click', logout);
+    document.getElementById('editProfileBtn').addEventListener('click', () => alert('✏️ Edit profile (demo)'));
 
-      function renderPortal() {
-        var container = examContainer;
-        var iframe = container.querySelector('iframe');
+    // File upload UI
+    const fileInput = document.getElementById('noteFileInput');
+    const browseBtn = document.getElementById('browseFileBtn');
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInfo = document.getElementById('fileInfo');
 
-        if (state.registered && state.examActive) {
-          if (!iframe) {
-            var newIframe = document.createElement('iframe');
-            newIframe.src = GOOGLE_FORM_EMBED_URL;
-            newIframe.allowFullscreen = true;
-            newIframe.title = 'Google Form Exam';
-            container.innerHTML = '';
-            container.appendChild(newIframe);
-          } else {
-            iframe.style.display = 'block';
-          }
-          var placeholder = container.querySelector('.exam-placeholder');
-          if (placeholder) placeholder.style.display = 'none';
-          startExamBtn.innerHTML = '<i class="fas fa-eye"></i> View Exam';
-          startExamBtn.disabled = true;
-        } else {
-          var placeholderEl = container.querySelector('.exam-placeholder');
-          if (!placeholderEl) {
-            container.innerHTML = '<div class="exam-placeholder"><i class="fas fa-google"></i><p><strong>Google Form</strong> will appear after clicking "Start exam"</p><span>(embed ready)</span></div>';
-          } else {
-            placeholderEl.style.display = 'flex';
-          }
-          var oldIframe = container.querySelector('iframe');
-          if (oldIframe) oldIframe.remove();
-          startExamBtn.innerHTML = '<i class="fas fa-play"></i> Start exam';
-          startExamBtn.disabled = false;
-        }
-      }
-
-      function startExam() {
-        if (!state.registered) {
-          alert('You must login first.');
-          return;
-        }
-        if (state.examActive) {
-          return;
-        }
-        state.examActive = true;
-        renderPortal();
-      }
-
-      function handleLogin() {
-        var email = loginEmail.value.trim();
-        if (!email) {
-          loginMessage.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please enter your email address.';
-          loginMessage.className = 'login-message error';
-          return;
-        }
-
-        loginBtn.disabled = true;
-        loginBtn.innerHTML = '<i class="fas fa-spinner spinner"></i> Checking...';
-        loginMessage.innerHTML = '<i class="fas fa-spinner spinner"></i> Validating...';
-        loginMessage.className = 'login-message';
-
-        checkEmailWithAppsScript(email)
-          .then(function(result) {
-            if (result.success && result.found) {
-              state.registered = true;
-              state.studentEmail = email;
-              state.studentName = result.name || email.split('@')[0];
-              state.examActive = false;
-              loginMessage.innerHTML = '<i class="fas fa-check-circle"></i> Login successful! Welcome ' + email;
-              loginMessage.className = 'login-message success';
-              setTimeout(function() {
-                showPortal(email);
-              }, 500);
-            } else {
-              state.registered = false;
-              var errorMsg = result.message || 'Email not found in spreadsheet.';
-              loginMessage.innerHTML = '<i class="fas fa-times-circle"></i><div><div class="error-title">REGISTRATION NOT FOUND</div><div class="error-detail">PLEASE CONTACT THE ADMIN IF YOU THINK IT IS A MISTAKE</div><div class="error-contact"><i class="fas fa-envelope"></i> ' + ADMIN_CONTACT + '</div></div>';
-              loginMessage.className = 'login-message error';
-              loginBtn.disabled = false;
-              loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-            }
-          })
-          .catch(function(error) {
-            loginMessage.innerHTML = '<i class="fas fa-times-circle"></i> Error: ' + error.message;
-            loginMessage.className = 'login-message error';
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-          });
-      }
-
-      function handleLogout() {
-        state.registered = false;
-        state.studentEmail = '';
-        state.studentName = '';
-        state.examActive = false;
-        showLogin();
-      }
-
-      function openResetModal() {
-        resetPasscode.value = '';
-        modalError.classList.remove('show');
-        resetModal.classList.add('active');
-        setTimeout(function() {
-          resetPasscode.focus();
-        }, 100);
-      }
-
-      function closeResetModal() {
-        resetModal.classList.remove('active');
-        resetPasscode.value = '';
-        modalError.classList.remove('show');
-      }
-
-      function confirmReset() {
-        var passcode = resetPasscode.value.trim();
-        if (passcode === RESET_PASSCODE) {
-          state.registered = false;
-          state.studentEmail = '';
-          state.studentName = '';
-          state.examActive = false;
-          closeResetModal();
-          showLogin();
-        } else {
-          modalError.classList.add('show');
-          resetPasscode.value = '';
-          resetPasscode.focus();
-          setTimeout(function() {
-            modalError.classList.remove('show');
-          }, 3000);
-        }
-      }
-
-      // ================================================================
-      // Init
-      // ================================================================
-      function init() {
-        showLogin();
-
-        loginBtn.addEventListener('click', handleLogin);
-        loginEmail.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            handleLogin();
-          }
-        });
-
-        logoutBtn.addEventListener('click', handleLogout);
-        startExamBtn.addEventListener('click', startExam);
-        resetExamBtn.addEventListener('click', openResetModal);
-
-        modalConfirmBtn.addEventListener('click', confirmReset);
-        modalCancelBtn.addEventListener('click', closeResetModal);
-
-        resetPasscode.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            confirmReset();
-          }
-        });
-
-        resetModal.addEventListener('click', function(e) {
-          if (e.target === resetModal) {
-            closeResetModal();
-          }
-        });
-
-        console.log('Exam Portal initialized successfully!');
-        console.log('Admin contact:', ADMIN_CONTACT);
-        console.log('Apps Script URL:', APPS_SCRIPT_URL);
-        console.log('Please update GOOGLE_FORM_EMBED_URL with your actual form embed URL.');
-      }
-
-      // Run when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+    browseBtn.addEventListener('click', () => fileInput.click());
+    uploadArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', function() {
+      if (this.files.length > 0) {
+        fileInfo.textContent = `📎 ${this.files[0].name} (${(this.files[0].size/1024).toFixed(1)} KB)`;
       } else {
-        init();
+        fileInfo.textContent = 'No file selected';
       }
+    });
 
-    })();
-  </script>
+    // Upload form
+    document.getElementById('uploadNoteForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('noteTitleInput').value;
+      const subject = document.getElementById('noteSubjectInput').value;
+      const file = document.getElementById('noteFileInput').files[0];
+      if (!file) { alert('Please select a file to upload.'); return; }
+      uploadNote(title, subject, file);
+    });
 
+    // init: login visible
+    loginScreen.style.display = 'flex';
+    dashboardScreen.style.display = 'none';
+    // prefill
+    studentIdInput.value = 'S1001';
+    passwordInput.value = 'pass123';
+
+    // extra: if user clicks on notes tab, re-render (already done)
+  })();
+</script>
 </body>
 </html>
